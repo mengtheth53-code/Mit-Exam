@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'app_network_image.dart';
 import '../models/giveaway.dart';
 import '../screens/giveaway_detail_screen.dart';
 
@@ -40,19 +40,9 @@ class GiveawayCard extends StatelessWidget {
               children: [
                 AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: CachedNetworkImage(
+                  child: AppNetworkImage(
                     imageUrl: giveaway.displayImageUrl,
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: colorScheme.surfaceContainerHighest,
-                      child: const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      color: colorScheme.surfaceContainerHighest,
-                      child: const Icon(Icons.broken_image, size: 40),
-                    ),
                   ),
                 ),
                 Positioned(

@@ -35,10 +35,19 @@ class Giveaway {
     required this.gamerpowerUrl,
   });
 
-  /// Returns the image URL formatted properly.
-  /// On Flutter Web, external CDN images are blocked by browser CORS policies.
-  /// Routing web requests through wsrv.nl adds Access-Control-Allow-Origin: * headers.
+  /// Optimized thumbnail for GridView cards.
+  /// Uses thumbnail (small payload) and wsrv.nl proxy on web for CORS compliance.
   String get displayImageUrl {
+    final rawUrl = (thumbnail.isNotEmpty ? thumbnail : image).trim();
+    if (rawUrl.isEmpty) return '';
+    if (kIsWeb) {
+      return 'https://wsrv.nl/?url=${Uri.encodeComponent(rawUrl)}';
+    }
+    return rawUrl;
+  }
+
+  /// High-resolution image for detail screen header.
+  String get displayDetailImageUrl {
     final rawUrl = (image.isNotEmpty ? image : thumbnail).trim();
     if (rawUrl.isEmpty) return '';
     if (kIsWeb) {

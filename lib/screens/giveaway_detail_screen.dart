@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/giveaway.dart';
+import '../widgets/app_network_image.dart';
 
 class GiveawayDetailScreen extends StatelessWidget {
   final Giveaway giveaway;
@@ -87,21 +87,11 @@ class GiveawayDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Hero Image
-            CachedNetworkImage(
-              imageUrl: giveaway.displayImageUrl,
+            AppNetworkImage(
+              imageUrl: giveaway.displayDetailImageUrl,
               width: double.infinity,
               height: 230,
               fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                height: 230,
-                color: colorScheme.surfaceContainerHighest,
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-              errorWidget: (context, url, error) => Container(
-                height: 230,
-                color: colorScheme.surfaceContainerHighest,
-                child: const Icon(Icons.broken_image, size: 60),
-              ),
             ),
 
             Padding(
