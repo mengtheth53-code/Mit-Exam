@@ -88,7 +88,7 @@ class GiveawayDetailScreen extends StatelessWidget {
           children: [
             // Hero Image
             CachedNetworkImage(
-              imageUrl: giveaway.image.isNotEmpty ? giveaway.image : giveaway.thumbnail,
+              imageUrl: giveaway.displayImageUrl,
               width: double.infinity,
               height: 230,
               fit: BoxFit.cover,

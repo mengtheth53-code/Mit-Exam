@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Giveaway {
   final int id;
   final String title;
@@ -32,6 +34,18 @@ class Giveaway {
     required this.status,
     required this.gamerpowerUrl,
   });
+
+  /// Returns the image URL formatted properly.
+  /// On Flutter Web, external CDN images are blocked by browser CORS policies.
+  /// Routing web requests through wsrv.nl adds Access-Control-Allow-Origin: * headers.
+  String get displayImageUrl {
+    final rawUrl = (image.isNotEmpty ? image : thumbnail).trim();
+    if (rawUrl.isEmpty) return '';
+    if (kIsWeb) {
+      return 'https://wsrv.nl/?url=${Uri.encodeComponent(rawUrl)}';
+    }
+    return rawUrl;
+  }
 
   factory Giveaway.fromJson(Map<String, dynamic> json) {
     return Giveaway(

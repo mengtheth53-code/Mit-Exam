@@ -41,7 +41,7 @@ class GiveawayCard extends StatelessWidget {
                 AspectRatio(
                   aspectRatio: 16 / 9,
                   child: CachedNetworkImage(
-                    imageUrl: giveaway.image.isNotEmpty ? giveaway.image : giveaway.thumbnail,
+                    imageUrl: giveaway.displayImageUrl,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => Container(
                       color: colorScheme.surfaceContainerHighest,
