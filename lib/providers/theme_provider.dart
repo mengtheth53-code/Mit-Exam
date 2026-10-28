@@ -9,13 +9,13 @@ class ThemeColorOption {
 }
 
 const List<ThemeColorOption> availableThemeColors = [
-  ThemeColorOption(name: 'Deep Purple', color: Colors.deepPurple),
-  ThemeColorOption(name: 'Royal Blue', color: Colors.indigo),
-  ThemeColorOption(name: 'Cyan Teal', color: Colors.teal),
-  ThemeColorOption(name: 'Emerald Green', color: Colors.green),
-  ThemeColorOption(name: 'Amber Orange', color: Colors.deepOrange),
-  ThemeColorOption(name: 'Rose Pink', color: Colors.pink),
-  ThemeColorOption(name: 'Crimson Red', color: Colors.red),
+  ThemeColorOption(name: 'Neon Purple', color: Color(0xFF8B5CF6)),
+  ThemeColorOption(name: 'Cyber Indigo', color: Color(0xFF6366F1)),
+  ThemeColorOption(name: 'Electric Teal', color: Color(0xFF06B6D4)),
+  ThemeColorOption(name: 'Emerald Green', color: Color(0xFF10B981)),
+  ThemeColorOption(name: 'Sunset Amber', color: Color(0xFFF59E0B)),
+  ThemeColorOption(name: 'Neon Pink', color: Color(0xFFEC4899)),
+  ThemeColorOption(name: 'Crimson Red', color: Color(0xFFEF4444)),
 ];
 
 class ThemeState {
@@ -43,7 +43,7 @@ class ThemeNotifier extends Notifier<ThemeState> {
   ThemeState build() {
     return const ThemeState(
       themeMode: ThemeMode.system,
-      primaryColor: Colors.deepPurple,
+      primaryColor: Color(0xFF8B5CF6),
     );
   }
 
