@@ -1,3 +1,4 @@
 {
-  "cmake.sourceDirectory": "E:/flutter_projects/Mit-Exam/linux"
+  "cmake.sourceDirectory": "E:/flutter_projects/Mit-Exam/linux",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
