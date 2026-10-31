@@ -24,34 +24,16 @@ final searchQueryProvider =
   return SearchQueryNotifier();
 });
 
-class PlatformFilterNotifier extends Notifier<String> {
-  @override
-  String build() => 'All';
-
-  void setPlatform(String platform) => state = platform;
-}
-
-final selectedPlatformFilterProvider =
-    NotifierProvider<PlatformFilterNotifier, String>(() {
-  return PlatformFilterNotifier();
-});
-
 final filteredGiveawaysProvider = Provider<AsyncValue<List<Giveaway>>>((ref) {
   final giveawaysAsync = ref.watch(giveawaysFutureProvider);
   final query = ref.watch(searchQueryProvider).trim().toLowerCase();
-  final platformFilter = ref.watch(selectedPlatformFilterProvider);
 
   return giveawaysAsync.whenData((giveaways) {
+    if (query.isEmpty) return giveaways;
     return giveaways.where((game) {
-      final matchesQuery = query.isEmpty ||
-          game.title.toLowerCase().contains(query) ||
+      return game.title.toLowerCase().contains(query) ||
           game.description.toLowerCase().contains(query) ||
           game.platforms.toLowerCase().contains(query);
-
-      final matchesPlatform = platformFilter == 'All' ||
-          game.platforms.toLowerCase().contains(platformFilter.toLowerCase());
-
-      return matchesQuery && matchesPlatform;
     }).toList();
   });
 });

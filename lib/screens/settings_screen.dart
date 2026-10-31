@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../providers/theme_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -24,56 +23,51 @@ class SettingsScreen extends ConsumerWidget {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: [
-          // 5.1 Appearance / Dark Mode Section
+          // 5.1 Dark Mode Switching Section
           Text(
-            'APPEARANCE',
+            'DARK MODE',
             style: theme.textTheme.labelMedium?.copyWith(
               fontWeight: FontWeight.w800,
               letterSpacing: 1.2,
               color: colorScheme.primary,
             ),
           ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: _buildThemeModeCard(
-                  context,
-                  title: 'System',
-                  icon: Icons.brightness_auto_rounded,
-                  mode: ThemeMode.system,
-                  currentMode: themeState.themeMode,
-                  onTap: () => themeNotifier.setThemeMode(ThemeMode.system),
-                  isDark: isDark,
-                ),
+          const SizedBox(height: 10),
+          Container(
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1E293B) : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.08)
+                    : Colors.black.withValues(alpha: 0.06),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: _buildThemeModeCard(
-                  context,
-                  title: 'Light',
-                  icon: Icons.light_mode_rounded,
-                  mode: ThemeMode.light,
-                  currentMode: themeState.themeMode,
-                  onTap: () => themeNotifier.setThemeMode(ThemeMode.light),
-                  isDark: isDark,
+            ),
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(16),
+              clipBehavior: Clip.antiAlias,
+              child: SwitchListTile(
+                secondary: Icon(
+                  isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+                  color: colorScheme.primary,
                 ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: _buildThemeModeCard(
-                  context,
-                  title: 'Dark',
-                  icon: Icons.dark_mode_rounded,
-                  mode: ThemeMode.dark,
-                  currentMode: themeState.themeMode,
-                  onTap: () => themeNotifier.setThemeMode(ThemeMode.dark),
-                  isDark: isDark,
+                title: const Text(
+                  'Dark Mode',
+                  style: TextStyle(fontWeight: FontWeight.w700),
                 ),
+                subtitle: Text(
+                  isDark ? 'Dark theme enabled' : 'Light theme enabled',
+                  style: TextStyle(color: colorScheme.outline, fontSize: 12),
+                ),
+                value: isDark,
+                onChanged: (bool enabled) {
+                  themeNotifier.setThemeMode(enabled ? ThemeMode.dark : ThemeMode.light);
+                },
               ),
-            ],
+            ),
           ),
 
           const SizedBox(height: 28),
@@ -169,167 +163,7 @@ class SettingsScreen extends ConsumerWidget {
               }).toList(),
             ),
           ),
-
-          const SizedBox(height: 28),
-
-          // About Project Card
-          Text(
-            'ABOUT PROJECT',
-            style: theme.textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-              letterSpacing: 1.2,
-              color: colorScheme.primary,
-            ),
-          ),
-          const SizedBox(height: 12),
-
-          Container(
-            decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1E293B) : Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.08)
-                    : Colors.black.withValues(alpha: 0.06),
-              ),
-            ),
-            child: Material(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(20),
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                children: [
-                  _buildInfoTile(
-                    icon: Icons.api_rounded,
-                    title: 'Data Provider',
-                    subtitle: 'GamerPower Public Giveaways API',
-                    color: colorScheme.primary,
-                  ),
-                  const Divider(height: 1),
-                  _buildInfoTile(
-                    icon: Icons.layers_rounded,
-                    title: 'State Architecture',
-                    subtitle: 'Flutter Riverpod 3.x Reactive State',
-                    color: colorScheme.secondary,
-                  ),
-                  const Divider(height: 1),
-                  ListTile(
-                    leading: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Icon(Icons.code_rounded,
-                          color: colorScheme.primary, size: 20),
-                    ),
-                    title: const Text(
-                      'Source Code',
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-                    ),
-                    subtitle: const Text(
-                      'github.com/mengtheth53-code/Mit-Exam',
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    trailing: const Icon(Icons.open_in_new_rounded, size: 18),
-                    onTap: () {
-                      launchUrl(
-                        Uri.parse(
-                            'https://github.com/mengtheth53-code/Mit-Exam'),
-                        mode: LaunchMode.externalApplication,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildThemeModeCard(
-    BuildContext context, {
-    required String title,
-    required IconData icon,
-    required ThemeMode mode,
-    required ThemeMode currentMode,
-    required VoidCallback onTap,
-    required bool isDark,
-  }) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final isSelected = mode == currentMode;
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? colorScheme.primary.withValues(alpha: isDark ? 0.25 : 0.12)
-              : isDark
-                  ? const Color(0xFF1E293B)
-                  : Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected
-                ? colorScheme.primary
-                : isDark
-                    ? Colors.white.withValues(alpha: 0.08)
-                    : Colors.black.withValues(alpha: 0.06),
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? colorScheme.primary : colorScheme.outline,
-              size: 26,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
-                color: isSelected
-                    ? colorScheme.primary
-                    : theme.textTheme.bodyMedium?.color,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoTile({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-  }) {
-    return ListTile(
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Icon(icon, color: color, size: 20),
-      ),
-      title: Text(
-        title,
-        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: const TextStyle(fontSize: 12),
       ),
     );
   }

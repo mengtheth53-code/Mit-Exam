@@ -251,42 +251,6 @@ class GiveawayDetailScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 24),
-
-                  // Instructions Card
-                  Text(
-                    'How to Claim',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          colorScheme.primary.withValues(alpha: 0.08),
-                          colorScheme.primary.withValues(alpha: 0.03),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: colorScheme.primary.withValues(alpha: 0.25),
-                      ),
-                    ),
-                    child: Text(
-                      giveaway.instructions.isNotEmpty
-                          ? giveaway.instructions
-                          : '1. Click the "Claim Free Giveaway" button below.\n2. Log in or create an account on the target platform.\n3. Add the game or DLC to your library.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        height: 1.6,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

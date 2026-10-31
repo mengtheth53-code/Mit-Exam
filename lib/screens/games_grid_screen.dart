@@ -13,17 +13,6 @@ class GamesGridScreen extends ConsumerStatefulWidget {
 class _GamesGridScreenState extends ConsumerState<GamesGridScreen> {
   final TextEditingController _searchController = TextEditingController();
 
-  static const List<Map<String, dynamic>> _platforms = [
-    {'name': 'All', 'icon': Icons.dashboard_rounded},
-    {'name': 'PC', 'icon': Icons.desktop_windows_rounded},
-    {'name': 'Steam', 'icon': Icons.sports_esports_rounded},
-    {'name': 'Epic Games', 'icon': Icons.bolt_rounded},
-    {'name': 'Playstation', 'icon': Icons.gamepad_rounded},
-    {'name': 'Xbox', 'icon': Icons.videogame_asset_rounded},
-    {'name': 'Android', 'icon': Icons.phone_android_rounded},
-    {'name': 'iOS', 'icon': Icons.apple_rounded},
-  ];
-
   @override
   void dispose() {
     _searchController.dispose();
@@ -36,7 +25,6 @@ class _GamesGridScreenState extends ConsumerState<GamesGridScreen> {
     final colorScheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
     final giveawaysState = ref.watch(filteredGiveawaysProvider);
-    final selectedPlatform = ref.watch(selectedPlatformFilterProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -103,7 +91,7 @@ class _GamesGridScreenState extends ConsumerState<GamesGridScreen> {
         children: [
           // Search Input
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 6),
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
             child: Container(
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF1E293B) : Colors.white,
@@ -155,60 +143,6 @@ class _GamesGridScreenState extends ConsumerState<GamesGridScreen> {
                   setState(() {});
                 },
               ),
-            ),
-          ),
-
-          // Platform Filter Chips
-          SizedBox(
-            height: 52,
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              scrollDirection: Axis.horizontal,
-              itemCount: _platforms.length,
-              separatorBuilder: (context, index) => const SizedBox(width: 8),
-              itemBuilder: (context, index) {
-                final platform = _platforms[index];
-                final isSelected = selectedPlatform == platform['name'];
-
-                return FilterChip(
-                  avatar: Icon(
-                    platform['icon'] as IconData,
-                    size: 16,
-                    color: isSelected ? Colors.white : colorScheme.onSurfaceVariant,
-                  ),
-                  label: Text(
-                    platform['name'] as String,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                      color: isSelected ? Colors.white : colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  selected: isSelected,
-                  selectedColor: colorScheme.primary,
-                  backgroundColor: isDark
-                      ? const Color(0xFF1E293B)
-                      : Colors.white,
-                  side: BorderSide(
-                    color: isSelected
-                        ? Colors.transparent
-                        : isDark
-                            ? Colors.white.withValues(alpha: 0.1)
-                            : Colors.black.withValues(alpha: 0.08),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  showCheckmark: false,
-                  onSelected: (selected) {
-                    if (selected) {
-                      ref
-                          .read(selectedPlatformFilterProvider.notifier)
-                          .setPlatform(platform['name'] as String);
-                    }
-                  },
-                );
-              },
             ),
           ),
 
@@ -301,7 +235,7 @@ class _GamesGridScreenState extends ConsumerState<GamesGridScreen> {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            'Try a different title or select another platform.',
+                            'Try a different title or search keyword.',
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: colorScheme.outline,
                             ),
